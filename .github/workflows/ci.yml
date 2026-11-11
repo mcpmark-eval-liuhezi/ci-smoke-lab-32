@@ -1,0 +1,25 @@
+name: CI Smoke Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write build artifact
+        run: |
+          echo "demo-build smoke artifact" > demo-build.txt
+          echo "generated-at: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> demo-build.txt
+          echo "workflow-run: ci-smoke-lab-32 CI Smoke Test"
+          cat demo-build.txt
+
+      - name: Upload demo-build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-build
+          path: demo-build.txt
+          retention-days: 30
